@@ -1,0 +1,138 @@
+.section {
+  padding: 100px 0;
+  background: var(--bg);
+}
+
+.header {
+  margin-bottom: 56px;
+  /* transition delay for the header is set as --i:0 (default) */
+}
+
+.title {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.lead {
+  margin-bottom: 0;
+}
+
+/* Skills grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    opacity 0.75s var(--ease-out, cubic-bezier(0.16,1,0.3,1)) calc(var(--i, 0) * var(--stagger, 0.13s)),
+    transform 0.75s var(--ease-spring, cubic-bezier(0.34,1.56,0.64,1)) calc(var(--i, 0) * var(--stagger, 0.13s)),
+    filter    0.75s var(--ease-out, cubic-bezier(0.16,1,0.3,1)) calc(var(--i, 0) * var(--stagger, 0.13s));
+  cursor: default;
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer sweep — one-shot on reveal */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.09) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%) skewX(-15deg);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.card[data-revealed="true"]::after {
+  animation: shimmerSweep 0.9s ease forwards;
+  animation-delay: calc(var(--i, 0) * var(--stagger, 0.13s) + 0.45s);
+}
+
+/* Top-edge color accent */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--card-color, var(--accent));
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+/* Override data-reveal revealed state to allow hover lift */
+.card[data-revealed="true"]:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  /* lift — additive to the resolved transform: none */
+  transform: translateY(-5px) !important;
+  box-shadow: var(--shadow-lg);
+}
+
+.card[data-revealed="true"]:hover::before {
+  opacity: 1;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-secondary, rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .title { text-align: center; }
+  .lead { margin: 0 auto; text-align: center; }
+  .header { text-align: center; }
+}
+
+@media (max-width: 560px) {
+  .grid { grid-template-columns: 1fr; }
+}
